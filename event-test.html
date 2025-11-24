@@ -108,16 +108,21 @@ document.getElementById("connect").onclick = async () => {
 
   contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 
-  // 监听事件（重点）
-  contract.on("MessageChanged", (user, oldMsg, newMsg) => {
-    console.log("📢 事件触发！");
+  //  // 监听存款事件
+  contract.on("Deposit", (user, amount) => {
+    console.log("📥 Deposit 事件触发");
     console.log("用户：", user);
-    console.log("旧消息：", oldMsg);
-    console.log("新消息：", newMsg);
-    alert(`事件触发：${newMsg}`);
+    console.log("金额：", amount.toString());
+    alert(`存款事件：${user} 存入了 ${amount.toString()} wei`);
   });
 
-  alert("已连接并开始监听事件！");
+  // 监听取款事件（可选）
+  contract.on("Withdraw", (user, amount) => {
+    console.log("📤 Withdraw 事件触发");
+    console.log("用户：", user);
+    console.log("金额：", amount.toString());
+    alert(`取款事件：${user} 取出了 ${amount.toString()} wei`);
+  });
 }
 </script>
 
